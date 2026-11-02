@@ -1,6 +1,7 @@
 ﻿namespace Backend;
 
-public class DoublyLinkedList<T>
+public class DoublyLinkedList<T> where T : IComparable<T>
+
 {
     private DoubleNode<T>? _head;
     private DoubleNode<T>? _tail;
@@ -11,7 +12,7 @@ public class DoublyLinkedList<T>
         _tail = null; // This line can be removed
     }
 
-    public void InsertAtBeginning(T data)
+    public void Add(T data)
     {
         var newNode = new DoubleNode<T>(data);
         if (_head == null)
@@ -20,10 +21,35 @@ public class DoublyLinkedList<T>
             _tail = newNode;
             return;
         }
-        newNode.Next = _head;
-        _head.Prev = newNode;
-        _head = newNode;
+        if (data.CompareTo(_head.Data) <= 0)
+        {
+            newNode.Next = _head;
+            _head.Prev = newNode;
+            _head = newNode;
+        }
+
+        if (data.CompareTo(_tail.Data) >= 0)
+        {
+            _tail.Next = newNode;
+            newNode.Prev = _tail;
+            _tail = newNode;
+            return;
+        }
+        var current = _head.Next;
+        while (current != null)
+        {
+            if (data.CompareTo(current.Data) < 0)
+            {
+                newNode.Next = current;
+                newNode.Prev = current.Prev;
+                current.Prev!.Next = newNode;
+                current.Prev = newNode;
+                return;
+            }
+            current = current.Next;
+        }
     }
+    
 
     public void InsertAtEnd(T data)
     {
