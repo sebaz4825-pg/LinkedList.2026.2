@@ -2,7 +2,6 @@
 namespace Backend;
 
 public class DoublyLinkedList<T> where T : IComparable<T>
-
 {
     private DoubleNode<T>? _head;
     private DoubleNode<T>? _tail;
@@ -13,15 +12,23 @@ public class DoublyLinkedList<T> where T : IComparable<T>
         _tail = null; // This line can be removed
     }
 
-    public void Add(T data)
+    public DoubleNode<T>? Get_tail1()
+    {
+        return _tail;
+    }
+
+    // Adicionar 
+    public void Add(T data, DoubleNode<T>? _tail1)
     {
         var newNode = new DoubleNode<T>(data);
+
         if (_head == null)
         {
             _head = newNode;
             _tail = newNode;
             return;
         }
+
         if (data.CompareTo(_head.Data) <= 0)
         {
             newNode.Next = _head;
@@ -37,6 +44,7 @@ public class DoublyLinkedList<T> where T : IComparable<T>
             _tail = newNode;
             return;
         }
+
         var current = _head.Next;
         while (current != null)
         {
@@ -51,51 +59,34 @@ public class DoublyLinkedList<T> where T : IComparable<T>
             current = current.Next;
         }
     }
+
+    // Ordenar descendentemente
     public void SortDescending()
     {
-        if (_head == null || _head == _tail) return; 
+        if (_head == null || _head == _tail) return;
 
         var current = _head;
         DoubleNode<T>? temp = null;
 
-      
         while (current != null)
         {
             temp = current.Prev;
             current.Prev = current.Next;
             current.Next = temp;
-            current = current.Prev; 
+            current = current.Prev;
         }
 
-    
         temp = _head;
         _head = _tail;
         _tail = temp;
     }
-    public Dictionary<T, int> GetFrequencies()
-    {
-        var frequencies = new Dictionary<T, int>();
-        var current = _head;
-        while (current != null)
-        {
-            if (current != null)
-            {
-                if (!frequencies.ContainsKey(current.Data))
-                    frequencies[current.Data]++;
-                else
-                    frequencies[current.Data] = 1;
-            }
-            current = current.Next;
-        }
-        return frequencies;
-    }
+
+    // Mostrar la(s) moda(s)
     public List<T> GetModes()
     {
         var frequencies = GetFrequencies();
         var modes = new List<T>();
-         if (frequencies.Count == 0)
-
-            return modes;
+        if (frequencies.Count == 0) return modes;
 
         int maxFreq = frequencies.Values.Max();
         foreach (var pair in frequencies)
@@ -108,20 +99,26 @@ public class DoublyLinkedList<T> where T : IComparable<T>
         return modes;
     }
 
-    public void InsertAtEnd(T data)
+    // mostrar el gráfico
+    public Dictionary<T, int> GetFrequencies()
     {
-        var newNode = new DoubleNode<T>(data);
-        if (_tail == null)
+        var frequencies = new Dictionary<T, int>();
+        var current = _head;
+        while (current != null)
         {
-            _head = newNode;
-            _tail = newNode;
-            return;
+            if (current.Data != null)
+            {
+                if (frequencies.ContainsKey(current.Data))
+                    frequencies[current.Data]++;
+                else
+                    frequencies[current.Data] = 1;
+            }
+            current = current.Next;
         }
-        _tail.Next = newNode;
-        newNode.Prev = _tail;
-        _tail = newNode;
+        return frequencies;
     }
 
+    // Existe
     public bool Contains(T data)
     {
         var current = _head;
@@ -136,33 +133,42 @@ public class DoublyLinkedList<T> where T : IComparable<T>
         return false;
     }
 
-    public void Remove(T data)
+    // Elimina una ocurrencia 
+    public bool Remove(T data)
     {
         var current = _head;
         while (current != null)
         {
-            if (current.Data!.Equals(data)) // Found
+            if (current.Data!.Equals(data))
             {
-                if (current.Prev == null) // Beginning 
+                if (current == _head && current == _tail)
                 {
-                    current.Next!.Prev = null;
+                    _head = null;
+                    _tail = null;
+                }
+                else if (current == _head)
+                {
                     _head = _head!.Next;
-                    return;
+                    _head.Prev = null;
                 }
-                if (current.Next == null) // End 
+                else if (current == _tail)
                 {
-                    current.Prev!.Next = null;
                     _tail = _tail!.Prev;
-                    return;
+                    _tail.Next = null;
                 }
-                // Middle
-                current.Prev.Next = current.Next;
-                current.Next.Prev = current.Prev;
-                return;
+                else
+                {
+                    current.Prev!.Next = current.Next;
+                    current.Next!.Prev = current.Prev;
+                }
+                return true;
             }
-            
+            current = current.Next;
         }
+        return false;
     }
+
+    // Elimina  todas las ocurrencias
     public int RemoveAll(T data)
     {
         int count = 0;
@@ -177,31 +183,31 @@ public class DoublyLinkedList<T> where T : IComparable<T>
                     _head = null;
                     _tail = null;
                 }
-                else if (current.Data == null)
+                else if (current == _head)
                 {
                     _head = _head.Next;
-                    _head! = null;
+                    _head.Prev = null;
                 }
                 else if (current == _tail)
                 {
                     _tail = _tail.Prev;
-                    _tail!.Next = null;
+                    _tail.Next = null;
                 }
                 else
                 {
                     current.Prev!.Next = current.Next;
-                    current.Next = current.Prev;
+                    current.Next!.Prev = current.Prev;
                 }
                 count++;
             }
             current = nextNode;
         }
-            return count;
+        return count;
     }
 
     public override string ToString()
     {
-        if (_head == null) return
+        if (_head == null) return "La lista está vacía.";
         var output = string.Empty;
         var current = _head;
         while (current != null)
@@ -214,6 +220,7 @@ public class DoublyLinkedList<T> where T : IComparable<T>
 
     public string ToStringReverse()
     {
+        if (_tail == null) return "La lista está vacía.";
         var output = string.Empty;
         var current = _tail;
         while (current != null)
