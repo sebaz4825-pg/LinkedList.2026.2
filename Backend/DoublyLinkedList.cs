@@ -26,6 +26,7 @@ public class DoublyLinkedList<T> where T : IComparable<T>
             newNode.Next = _head;
             _head.Prev = newNode;
             _head = newNode;
+            return;
         }
 
         if (data.CompareTo(_tail.Data) >= 0)
@@ -49,7 +50,27 @@ public class DoublyLinkedList<T> where T : IComparable<T>
             current = current.Next;
         }
     }
+    public void SortDescending()
+    {
+        if (_head == null || _head == _tail) return; 
+
+        var current = _head;
+        DoubleNode<T>? temp = null;
+
+      
+        while (current != null)
+        {
+            temp = current.Prev;
+            current.Prev = current.Next;
+            current.Next = temp;
+            current = current.Prev; 
+        }
+
     
+        temp = _head;
+        _head = _tail;
+        _tail = temp;
+    }
 
     public void InsertAtEnd(T data)
     {
@@ -109,6 +130,7 @@ public class DoublyLinkedList<T> where T : IComparable<T>
 
     public override string ToString()
     {
+        if (_head == null) return
         var output = string.Empty;
         var current = _head;
         while (current != null)
