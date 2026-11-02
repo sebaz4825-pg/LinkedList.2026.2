@@ -160,8 +160,43 @@ public class DoublyLinkedList<T> where T : IComparable<T>
                 current.Next.Prev = current.Prev;
                 return;
             }
-            current = current.Next;
+            
         }
+    }
+    public int RemoveAll(T data)
+    {
+        int count = 0;
+        var current = _head;
+        while (current != null)
+        {
+            var nextNode = current.Next;
+            if (current.Data != null && current.Data.Equals(data))
+            {
+                if (current == _head && current == _tail)
+                {
+                    _head = null;
+                    _tail = null;
+                }
+                else if (current.Data == null)
+                {
+                    _head = _head.Next;
+                    _head! = null;
+                }
+                else if (current == _tail)
+                {
+                    _tail = _tail.Prev;
+                    _tail!.Next = null;
+                }
+                else
+                {
+                    current.Prev!.Next = current.Next;
+                    current.Next = current.Prev;
+                }
+                count++;
+            }
+            current = nextNode;
+        }
+            return count;
     }
 
     public override string ToString()
