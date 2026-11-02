@@ -1,4 +1,5 @@
-﻿namespace Backend;
+﻿using System.Linq;
+namespace Backend;
 
 public class DoublyLinkedList<T> where T : IComparable<T>
 
@@ -70,6 +71,41 @@ public class DoublyLinkedList<T> where T : IComparable<T>
         temp = _head;
         _head = _tail;
         _tail = temp;
+    }
+    public Dictionary<T, int> GetFrequencies()
+    {
+        var frequencies = new Dictionary<T, int>();
+        var current = _head;
+        while (current != null)
+        {
+            if (current != null)
+            {
+                if (!frequencies.ContainsKey(current.Data))
+                    frequencies[current.Data]++;
+                else
+                    frequencies[current.Data] = 1;
+            }
+            current = current.Next;
+        }
+        return frequencies;
+    }
+    public List<T> GetModes()
+    {
+        var frequencies = GetFrequencies();
+        var modes = new List<T>();
+         if (frequencies.Count == 0)
+
+            return modes;
+
+        int maxFreq = frequencies.Values.Max();
+        foreach (var pair in frequencies)
+        {
+            if (pair.Value == maxFreq)
+            {
+                modes.Add(pair.Key);
+            }
+        }
+        return modes;
     }
 
     public void InsertAtEnd(T data)
