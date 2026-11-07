@@ -17,50 +17,50 @@ public class DoublyLinkedList<T> where T : IComparable<T>
         return _tail;
     }
 
-    // Adicionar 
+   // Add 
     public void Add(T data, DoubleNode<T>? _tail1)
     {
-        var newNode = new DoubleNode<T>(data);
+       var newNode = new DoubleNode<T>(data);
 
         if (_head == null)
-        {
+         {
             _head = newNode;
             _tail = newNode;
             return;
-        }
+         }
 
         if (data.CompareTo(_head.Data) <= 0)
-        {
+         {
             newNode.Next = _head;
             _head.Prev = newNode;
             _head = newNode;
             return;
-        }
+         }
 
-        if (data.CompareTo(_tail.Data) >= 0)
-        {
+        if (data.CompareTo(_tail!.Data) >= 0)
+         {
             _tail.Next = newNode;
             newNode.Prev = _tail;
             _tail = newNode;
             return;
-        }
+         }
 
         var current = _head.Next;
-        while (current != null)
-        {
+         while (current != null)
+          {
             if (data.CompareTo(current.Data) < 0)
-            {
+             {
                 newNode.Next = current;
                 newNode.Prev = current.Prev;
                 current.Prev!.Next = newNode;
                 current.Prev = newNode;
                 return;
-            }
+             }
             current = current.Next;
-        }
+           }
     }
 
-    // Ordenar descendentemente
+    // Sort in descending order
     public void SortDescending()
     {
         if (_head == null || _head == _tail) return;
@@ -81,7 +81,7 @@ public class DoublyLinkedList<T> where T : IComparable<T>
         _tail = temp;
     }
 
-    // Mostrar la(s) moda(s)
+    // Show the fashion(s)
     public List<T> GetModes()
     {
         var frequencies = GetFrequencies();
@@ -99,7 +99,7 @@ public class DoublyLinkedList<T> where T : IComparable<T>
         return modes;
     }
 
-    // mostrar el gráfico
+    // show the graph
     public Dictionary<T, int> GetFrequencies()
     {
         var frequencies = new Dictionary<T, int>();
@@ -118,7 +118,7 @@ public class DoublyLinkedList<T> where T : IComparable<T>
         return frequencies;
     }
 
-    // Existe
+    // It exists
     public bool Contains(T data)
     {
         var current = _head;
@@ -133,7 +133,7 @@ public class DoublyLinkedList<T> where T : IComparable<T>
         return false;
     }
 
-    // Elimina una ocurrencia 
+    //  Remove an occurrence
     public bool Remove(T data)
     {
         var current = _head;
@@ -149,12 +149,12 @@ public class DoublyLinkedList<T> where T : IComparable<T>
                 else if (current == _head)
                 {
                     _head = _head!.Next;
-                    _head.Prev = null;
+                    _head!.Prev = null;
                 }
                 else if (current == _tail)
                 {
                     _tail = _tail!.Prev;
-                    _tail.Next = null;
+                    _tail!.Next = null;
                 }
                 else
                 {
@@ -168,7 +168,7 @@ public class DoublyLinkedList<T> where T : IComparable<T>
         return false;
     }
 
-    // Elimina  todas las ocurrencias
+    // Remove all occurrences
     public int RemoveAll(T data)
     {
         int count = 0;
@@ -186,12 +186,12 @@ public class DoublyLinkedList<T> where T : IComparable<T>
                 else if (current == _head)
                 {
                     _head = _head.Next;
-                    _head.Prev = null;
+                    _head!.Prev = null;
                 }
                 else if (current == _tail)
                 {
                     _tail = _tail.Prev;
-                    _tail.Next = null;
+                    _tail!.Next = null;
                 }
                 else
                 {

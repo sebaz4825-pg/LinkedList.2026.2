@@ -12,7 +12,7 @@ do
 
     switch (option)
     {
-        case "1": // Adicionar 
+        case "1": // Add 
             Console.Write("Ingrese el valor a adicionar: ");
             var valueToAdd = Console.ReadLine();
             if (!string.IsNullOrEmpty(valueToAdd))
@@ -22,23 +22,23 @@ do
             }
             break;
 
-        case "2": // Mostrar hacia adelante
+        case "2": // Show forward
             Console.WriteLine("\n--- Recorrido hacia adelante ---");
             Console.WriteLine(list);
             break;
 
-        case "3": // Mostrar hacia atrás
+        case "3": // Show backwards
             Console.WriteLine("\n--- Recorrido hacia atrás ---");
             Console.WriteLine(list.ToStringReverse());
             break;
 
-        case "4": // Ordenar descendentemente
+        case "4": // Sort in descending order
             list.SortDescending();
             Console.WriteLine("\n¡Lista ordenada descendentemente con éxito!");
             Console.WriteLine(list);
             break;
 
-        case "5": // Mostrar la(s) moda(s)
+        case "5": // Show the fashion(s)
             var modes = list.GetModes();
             Console.WriteLine("\n--- Moda(s) de la lista ---");
             if (modes.Count == 0)
@@ -55,7 +55,7 @@ do
             }
             break;
 
-        case "6": // Mostrar gráfico 
+        case "6": // Show chart
             var frequencies = list.GetFrequencies();
             Console.WriteLine("\n--- Gráfico de Ocurrencias ---");
             if (frequencies.Count == 0)
@@ -72,7 +72,7 @@ do
             }
             break;
 
-        case "7": // Existe
+        case "7": // It exists
             Console.Write("Ingrese el valor a buscar: ");
             var itemToSearch = Console.ReadLine();
             if (itemToSearch != null && list.Contains(itemToSearch))
@@ -85,7 +85,7 @@ do
             }
             break;
 
-        case "8": // Eliminar una ocurrencia
+        case "8": // Delete an occurrence
             Console.Write("Ingrese el valor a eliminar (primera ocurrencia): ");
             var itemToRemove = Console.ReadLine();
             if (itemToRemove != null && list.Remove(itemToRemove))
@@ -98,7 +98,7 @@ do
             }
             break;
 
-        case "9": // Eliminar todas las ocurrencias
+        case "9": // Delete all occurrences
             Console.Write("Ingrese el valor para eliminar todas sus ocurrencias: ");
             var itemToRemoveAll = Console.ReadLine();
             if (itemToRemoveAll != null)
